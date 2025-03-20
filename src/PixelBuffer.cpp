@@ -20,24 +20,21 @@ void PixelBuffer::clearBuffer(unsigned int color)
     }
 }
 
+void PixelBuffer::setSize(int width, int height)
+{
+    this->width = width;
+    this->height = height;
+    buffer = new unsigned int[width * height];
+}
+
 int PixelBuffer::getHeight() const
 {
     return height;
 }
 
-void PixelBuffer::setHeight(int height)
-{
-    PixelBuffer::height = height;
-}
-
 int PixelBuffer::getWidth() const
 {
     return width;
-}
-
-void PixelBuffer::setWidth(int width)
-{
-    PixelBuffer::width = width;
 }
 
 unsigned int *PixelBuffer::getBuffer() const

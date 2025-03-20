@@ -10,6 +10,7 @@ private:
 public:
     PixelBuffer(unsigned int color, int height, int width);
     void clearBuffer(unsigned int color);
+    void setSize(int height, int width);
     int getHeight() const;
     void setHeight(int height);
     int getWidth() const;

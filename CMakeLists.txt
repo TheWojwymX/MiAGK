@@ -9,4 +9,5 @@ add_executable(MiAGK src/main.cpp
         src/Rasterizer.cpp
         include/Rasterizer.h
         src/ImageWriter.cpp
-        include/ImageWriter.h)
+        include/ImageWriter.h
+        include/mathTypes.h)
