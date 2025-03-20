@@ -1,3 +1,0 @@
-C:/Users/TheWojwymX/Desktop/MiAGK/cmake-build-debug/CMakeFiles/MiAGK.dir
-C:/Users/TheWojwymX/Desktop/MiAGK/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/TheWojwymX/Desktop/MiAGK/cmake-build-debug/CMakeFiles/rebuild_cache.dir
