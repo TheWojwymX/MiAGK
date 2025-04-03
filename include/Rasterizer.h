@@ -1,16 +1,21 @@
 #ifndef MIAGK_RASTERIZER_H
 #define MIAGK_RASTERIZER_H
+
+#include <vector>
 #include "../include/mathTypes.h"
 #include "../include/PixelBuffer.h"
+#include "Triangle.h"
 
 
 class Rasterizer {
 private:
     PixelBuffer* pixelBuffer;
+    std::vector<Triangle*> triangles;
 
 public:
     Rasterizer(PixelBuffer* pixelBuffer);
-    void triangle(unsigned int color, Float3 v1, Float3 v2, Float3 v3);
+    void addTriangle(Triangle* t1);
+    void fillTriangles();
 
 };
 

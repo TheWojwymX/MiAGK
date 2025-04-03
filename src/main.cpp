@@ -6,39 +6,22 @@
 
 int main() {
     // color ARGB
-    PixelBuffer* pixelBuffer = new PixelBuffer(0xff0000ff ,256,256);
+    PixelBuffer* pixelBuffer = new PixelBuffer(0xff0000ff ,512,512);
     ImageWriter* imageWriter = new ImageWriter();
     Rasterizer* rasterizer = new Rasterizer(pixelBuffer);
 
-    rasterizer->triangle( 0xffffffff,
-                          {-0.9f, 0.5f, 0.0f},
-                          {1.0f,1.0f,0.0f},
-                          {1.0f,-1.0f,0.0f});
+    Triangle* t1 = new Triangle(Float3(-1.5f, 0.0f, 0.0f), Float3(0.0f,1.5f,0.0f), Float3(1.5f,-0.2f,0.0f),
+                                Float3(1.0f, 0.0f, 0.0f), Float3(0.0f,1.0f,0.0f), Float3(0.0f,0.0f,1.0f));
 
-    rasterizer->triangle( 0xffffff00,
-                          {-0.6f, -0.8f, 0.0f},
-                          {0.7f,-0.8f,0.0f},
-                          {0.1f,-0.98f,0.0f});
+
+    rasterizer->addTriangle(t1);
+    rasterizer->fillTriangles();
 
     imageWriter->saveToFile(pixelBuffer, "test.tga");
 
-//////////////////////////////////////////////////////////////////////
-    pixelBuffer->setSize(1024,1024);
-    pixelBuffer->clearBuffer(0xffff0000);
-    rasterizer->triangle( 0xffffffff,
-                          {-0.9f, 0.5f, 0.0f},
-                          {1.0f,1.0f,0.0f},
-                          {1.0f,-1.0f,0.0f});
-
-    rasterizer->triangle( 0xffffff00,
-                          {-0.6f, -0.8f, 0.0f},
-                          {0.7f,-0.8f,0.0f},
-                          {0.1f,-0.98f,0.0f});
-
-    imageWriter->saveToFile(pixelBuffer, "test2.tga");
-
     // Clean-up
     delete rasterizer;
+    delete t1;
     delete imageWriter;
     delete pixelBuffer;
 }

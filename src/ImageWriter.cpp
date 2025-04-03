@@ -12,7 +12,7 @@ void ImageWriter::saveToFile(PixelBuffer* buffer, char *path)
     int width = buffer->getWidth();
     unsigned int* pixels = buffer->getBuffer();
 
-    std::ofstream file(path);
+    std::ofstream file(path, std::ios::binary);
 
     uint8_t tgaHeader[18] = {
             0, 0, 2,   // Brak ID, brak mapy kolorów, typ obrazu 2 (Truecolor, nieskompresowany)
