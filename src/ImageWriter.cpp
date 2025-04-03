@@ -10,7 +10,7 @@ void ImageWriter::saveToFile(PixelBuffer* buffer, char *path)
 {
     int height = buffer->getHeight();
     int width = buffer->getWidth();
-    unsigned int* pixels = buffer->getBuffer();
+    unsigned int* pixels = buffer->getPixelBuffer();
 
     std::ofstream file(path, std::ios::binary);
 

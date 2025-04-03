@@ -4,19 +4,21 @@ PixelBuffer::PixelBuffer(unsigned int color, int height, int width)
 {
     this->height = height;
     this->width = width;
-    buffer = new unsigned int[height * width];
+    pixelBuffer = new unsigned int[height * width];
+    zBuffer = new float[height * width];
 
     for(int i = 0; i < height * width; i++)
     {
-        buffer[i] = color;
+        pixelBuffer[i] = color;
+        zBuffer[i] = 1;
     }
 }
 
-void PixelBuffer::clearBuffer(unsigned int color)
+void PixelBuffer::clearPixelBuffer(unsigned int color)
 {
     for(int i = 0; i < height * width; i++)
     {
-        buffer[i] = color;
+        pixelBuffer[i] = color;
     }
 }
 
@@ -24,7 +26,7 @@ void PixelBuffer::setSize(int width, int height)
 {
     this->width = width;
     this->height = height;
-    buffer = new unsigned int[width * height];
+    pixelBuffer = new unsigned int[width * height];
 }
 
 int PixelBuffer::getHeight() const
@@ -37,11 +39,19 @@ int PixelBuffer::getWidth() const
     return width;
 }
 
-unsigned int *PixelBuffer::getBuffer() const
+unsigned int *PixelBuffer::getPixelBuffer() const
 {
-    return buffer;
+    return pixelBuffer;
 }
 
-void PixelBuffer::setBuffer(unsigned int *buffer) {
-    PixelBuffer::buffer = buffer;
+void PixelBuffer::setPixelBuffer(unsigned int *buffer) {
+    PixelBuffer::pixelBuffer = buffer;
+}
+
+float *PixelBuffer::getZBuffer() const {
+    return zBuffer;
+}
+
+void PixelBuffer::setZBuffer(float *zBuffer) {
+    PixelBuffer::zBuffer = zBuffer;
 }

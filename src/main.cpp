@@ -10,11 +10,18 @@ int main() {
     ImageWriter* imageWriter = new ImageWriter();
     Rasterizer* rasterizer = new Rasterizer(pixelBuffer);
 
-    Triangle* t1 = new Triangle(Float3(-1.5f, 0.0f, 0.0f), Float3(0.0f,1.5f,0.0f), Float3(1.5f,-0.2f,0.0f),
-                                Float3(1.0f, 0.0f, 0.0f), Float3(0.0f,1.0f,0.0f), Float3(0.0f,0.0f,1.0f));
+//    Triangle* t1 = new Triangle(Float3(-1.0f, -0.5f, 0.0f), Float3(0.0f,0.5f,0.0f), Float3(0.1f,-0.2f,0.0f),
+//                                Float3(1.0f, 0.0f, 0.0f), Float3(0.0f,1.0f,0.0f), Float3(0.0f,1.0f,0.0f));
+//    Triangle* t2 = new Triangle(Float3(0.1f, -0.2f, 0.0f), Float3(0.0f,0.5f,0.0f), Float3(0.8f,0.3f,0.0f),
+//                                Float3(1.0f, 1.0f, 0.0f), Float3(0.0f,1.0f,1.0f), Float3(1.0f,1.0f,1.0f));
 
+    Triangle* t1 = new Triangle(Float3(-1.0f, 0.0f, 0.0f), Float3(0.0f,1.0f,0.0f), Float3(1.0f,0.0f,0.0f),
+                                Float3(1.0f, 0.0f, 0.0f), Float3(0.0f,1.0f,0.0f), Float3(0.0f,1.0f,0.0f));
+    Triangle* t2 = new Triangle(Float3(-1.0f, -0.3f, -0.5f), Float3(0.0f,0.8f,0.5f), Float3(1.0f,-0.3f,-0.5f),
+                                Float3(1.0f, 1.0f, 0.0f), Float3(0.0f,1.0f,1.0f), Float3(0.0f,1.0f,1.0f));
 
     rasterizer->addTriangle(t1);
+    rasterizer->addTriangle(t2);
     rasterizer->fillTriangles();
 
     imageWriter->saveToFile(pixelBuffer, "test.tga");

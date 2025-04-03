@@ -4,19 +4,21 @@ class PixelBuffer {
 private:
     int height;
     int width;
-    unsigned int* buffer;
-
+    unsigned int* pixelBuffer;
+    float* zBuffer;
 
 public:
     PixelBuffer(unsigned int color, int height, int width);
-    void clearBuffer(unsigned int color);
+    void clearPixelBuffer(unsigned int color);
     void setSize(int height, int width);
     int getHeight() const;
     void setHeight(int height);
     int getWidth() const;
     void setWidth(int width);
-    unsigned int *getBuffer() const;
-    void setBuffer(unsigned int *buffer);
+    unsigned int *getPixelBuffer() const;
+    void setPixelBuffer(unsigned int *buffer);
+    float *getZBuffer() const;
+    void setZBuffer(float *zBuffer);
 
 };
 
