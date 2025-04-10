@@ -54,7 +54,7 @@ void Rasterizer::fillTriangles()
         {
             for (int y = miny; y < maxy; y++)
             {
-                if (( dx12 * (y - v1y) - dy12 * (x - v1x) ) >= (t1 ? 0 : 1)
+                if (( dx12 * (y - v1y) - dy12 * (x - v1x) ) >= (t1 ? 0 : 1) // >= but shifted by one
                     && ( dx23 * (y - v2y) - dy23 * (x - v2x) ) >= (t2 ? 0 : 1)
                     && ( dx31 * (y - v3y) - dy31 * (x - v3x) ) >= (t3 ? 0 : 1))
                 {

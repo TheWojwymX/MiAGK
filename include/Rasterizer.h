@@ -5,11 +5,13 @@
 #include "../include/mathTypes.h"
 #include "../include/PixelBuffer.h"
 #include "Triangle.h"
+#include "VertexProcessor.h"
 
 
 class Rasterizer {
 private:
     PixelBuffer* pixelBuffer;
+    VertexProcessor* vertexProcessor;
     std::vector<Triangle*> triangles;
 
 public:

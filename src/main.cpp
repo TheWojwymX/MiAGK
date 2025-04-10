@@ -6,19 +6,21 @@
 
 int main() {
     // color ARGB
-    PixelBuffer* pixelBuffer = new PixelBuffer(0xff0000ff ,512,512);
+    PixelBuffer* pixelBuffer = new PixelBuffer(0xff0000ff ,800,600);
     ImageWriter* imageWriter = new ImageWriter();
     Rasterizer* rasterizer = new Rasterizer(pixelBuffer);
+    VertexProcessor* vertexProcessor = new VertexProcessor();
 
-//    Triangle* t1 = new Triangle(Float3(-1.0f, -0.5f, 0.0f), Float3(0.0f,0.5f,0.0f), Float3(0.1f,-0.2f,0.0f),
-//                                Float3(1.0f, 0.0f, 0.0f), Float3(0.0f,1.0f,0.0f), Float3(0.0f,1.0f,0.0f));
-//    Triangle* t2 = new Triangle(Float3(0.1f, -0.2f, 0.0f), Float3(0.0f,0.5f,0.0f), Float3(0.8f,0.3f,0.0f),
-//                                Float3(1.0f, 1.0f, 0.0f), Float3(0.0f,1.0f,1.0f), Float3(1.0f,1.0f,1.0f));
+    vertexProcessor->setPerspective(90.0f, 800.0f / 600.0f, 0.1f, 1000.f);
 
-    Triangle* t1 = new Triangle(Float3(-1.0f, 0.0f, 0.0f), Float3(0.0f,1.0f,0.0f), Float3(1.0f,0.0f,0.0f),
-                                Float3(1.0f, 0.0f, 0.0f), Float3(0.0f,1.0f,0.0f), Float3(0.0f,1.0f,0.0f));
-    Triangle* t2 = new Triangle(Float3(-1.0f, -0.3f, -0.5f), Float3(0.0f,0.8f,0.5f), Float3(1.0f,-0.3f,-0.5f),
-                                Float3(1.0f, 1.0f, 0.0f), Float3(0.0f,1.0f,1.0f), Float3(0.0f,1.0f,1.0f));
+    Triangle* t1 = new Triangle(vertexProcessor->projectVertex(Float3(-50.0f, 0.f, -500.0f)).toFloat3(),
+                                vertexProcessor->projectVertex(Float3(50.0f,0.0f,-500.0f)).toFloat3(),
+                                vertexProcessor->projectVertex(Float3(0.0f,-50.0f,-500.0f)).toFloat3(),
+                                Float3(1.0f, 0.0f, 0.0), Float3(0.0f,1.0f,0.0f), Float3(0.0f,1.0f,0.0f));
+    Triangle* t2 = new Triangle(vertexProcessor->projectVertex(Float3(-75.0f, 25.f, -500.0f)).toFloat3(),
+                                vertexProcessor->projectVertex(Float3(0.0f,100.0f,-500.0f)).toFloat3(),
+                                vertexProcessor->projectVertex(Float3(75.0f,25.0f,-500.0f)).toFloat3(),
+                                Float3(1.0f, 1.0f, 0.0), Float3(0.0f,1.0f,1.0f), Float3(1.0f,0.0f,1.0f));
 
     rasterizer->addTriangle(t1);
     rasterizer->addTriangle(t2);

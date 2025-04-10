@@ -12,4 +12,6 @@ add_executable(MiAGK src/main.cpp
         include/ImageWriter.h
         include/mathTypes.h
         src/Triangle.cpp
-        include/Triangle.h)
+        include/Triangle.h
+        src/VertexProcessor.cpp
+        include/VertexProcessor.h)

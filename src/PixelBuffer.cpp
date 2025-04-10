@@ -1,6 +1,7 @@
+#include <cfloat>
 #include "../include/PixelBuffer.h"
 
-PixelBuffer::PixelBuffer(unsigned int color, int height, int width)
+PixelBuffer::PixelBuffer(unsigned int color, int width, int height)
 {
     this->height = height;
     this->width = width;
@@ -10,7 +11,7 @@ PixelBuffer::PixelBuffer(unsigned int color, int height, int width)
     for(int i = 0; i < height * width; i++)
     {
         pixelBuffer[i] = color;
-        zBuffer[i] = 1;
+        zBuffer[i] = -FLT_MAX;
     }
 }
 

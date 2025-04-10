@@ -8,7 +8,7 @@ private:
     float* zBuffer;
 
 public:
-    PixelBuffer(unsigned int color, int height, int width);
+    PixelBuffer(unsigned int color, int width, int height);
     void clearPixelBuffer(unsigned int color);
     void setSize(int height, int width);
     int getHeight() const;
