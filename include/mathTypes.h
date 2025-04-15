@@ -26,6 +26,15 @@ public:
 
     Float3() { }
 
+    Float3 cross(const Float3& other) const
+    {
+        return {
+                y * other.z - z * other.y,
+                z * other.x - x * other.z,
+                x * other.y - y * other.x
+        };
+    }
+
     void normalize()
     {
         float len = sqrt(x * x + y * y + z * z);
@@ -231,7 +240,9 @@ public:
 
     void setAsIdentity()
     {
-        rows[0].x = rows[1].y = rows[2].z = rows[3].w = 0.0f;
+        for (int i = 0; i < 4; ++i)
+            for (int j = 0; j < 4; ++j)
+                m[i][j] = (i == j) ? 1.0f : 0.0f;
     }
 };
 
