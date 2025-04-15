@@ -11,13 +11,16 @@
 class Rasterizer {
 private:
     PixelBuffer* pixelBuffer;
-    VertexProcessor* vertexProcessor;
     std::vector<Triangle*> triangles;
+    std::vector<Mesh*> meshes;
 
 public:
+    VertexProcessor* vertexProcessor;
     Rasterizer(PixelBuffer* pixelBuffer);
     void addTriangle(Triangle* t1);
     void fillTriangles();
+    void addMesh(Mesh* mesh);
+    void fillMeshes();
 
 };
 

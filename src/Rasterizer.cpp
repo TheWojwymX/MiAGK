@@ -7,6 +7,40 @@ Rasterizer::Rasterizer(PixelBuffer* pixelBuffer)
     this->pixelBuffer = pixelBuffer;
 }
 
+void Rasterizer::addMesh(Mesh* mesh)
+{
+    meshes.push_back(mesh);
+}
+
+void Rasterizer::fillMeshes()
+{
+    for (Mesh* mesh : meshes)
+    {
+        // Get transformed positions
+        std::vector<Float4> transformed = vertexProcessor->transformVertices(mesh->vertices);
+
+        for (const Int3& tri : mesh->indices)
+        {
+            const Vertex& v1 = mesh->vertices[tri.v1];
+            const Vertex& v2 = mesh->vertices[tri.v2];
+            const Vertex& v3 = mesh->vertices[tri.v3];
+
+            const Float4& p1 = transformed[tri.v1];
+            const Float4& p2 = transformed[tri.v2];
+            const Float4& p3 = transformed[tri.v3];
+
+            Triangle* triangle = new Triangle(
+                    Float3(p1.x, p1.y, p1.z),
+                    Float3(p2.x, p2.y, p2.z),
+                    Float3(p3.x, p3.y, p3.z),
+                    v1.vertexColor, v2.vertexColor, v3.vertexColor
+            );
+
+            addTriangle(triangle);
+        }
+    }
+}
+
 void Rasterizer::fillTriangles()
 {
     unsigned int* buffer = pixelBuffer->getPixelBuffer();

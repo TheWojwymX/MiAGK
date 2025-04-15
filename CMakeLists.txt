@@ -14,4 +14,9 @@ add_executable(MiAGK src/main.cpp
         src/Triangle.cpp
         include/Triangle.h
         src/VertexProcessor.cpp
-        include/VertexProcessor.h)
+        include/VertexProcessor.h
+        src/Mesh.cpp
+        include/Mesh.h
+        src/Sphere.cpp
+        include/Sphere.h
+        src/Mesh.cpp)

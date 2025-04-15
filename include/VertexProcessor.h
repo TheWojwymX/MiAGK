@@ -4,9 +4,10 @@
 
 #ifndef MIAGK_VERTEXPROCESSOR_H
 #define MIAGK_VERTEXPROCESSOR_H
-
+#pragma once
 
 #include "mathTypes.h"
+#include "Mesh.h"
 
 class VertexProcessor {
 public:
@@ -22,6 +23,8 @@ public:
     void mulByTranslation(Float3 v);
     void mulByScale(Float3 v);
     void mulByRotation(float a, Float3 v);
+    std::vector<Float4> transformVertices(const std::vector<Vertex>& verts);
+
     
 
 };

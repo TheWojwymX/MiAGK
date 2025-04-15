@@ -105,6 +105,15 @@ void VertexProcessor::mulByRotation(float a, Float3 v) {
     obj2world = m * obj2world;
 }
 
+std::vector<Float4> VertexProcessor::transformVertices(const std::vector<Vertex>& verts)
+{
+    std::vector<Float4> result;
+    for (const auto& v : verts) {
+        result.push_back(projectVertex(v.position));
+    }
+    return result;
+}
+
 
 
 
