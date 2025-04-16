@@ -7,7 +7,7 @@
 
 
 #include "Mesh.h"
-#include "VertexProcessor.h"
+#include "../VertexProcessor.h"
 
 class Sphere: public Mesh {
 public:
@@ -17,7 +17,6 @@ public:
 
     Sphere(float radius = 1.0f, int slices = 16, int stacks = 16);
     void create() override;
-    std::vector <Float4> getTransformedVertices(VertexProcessor &processor);
 };
 
 

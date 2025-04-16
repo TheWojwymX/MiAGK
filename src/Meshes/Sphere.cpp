@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <ctime>
-#include "../include/Sphere.h"
+#include "../../include/Meshes/Sphere.h"
 
 Sphere::Sphere(float radius, int slices, int stacks)
 {
@@ -54,14 +54,6 @@ void Sphere::create()
     }
 }
 
-std::vector<Float4> Sphere::getTransformedVertices(VertexProcessor &processor)
-{
-    std::vector<Float4> transformed;
-    for (const auto& v : vertices) {
-        transformed.push_back(processor.projectVertex(v.position));
-    }
-    return transformed;
-}
 
 
 

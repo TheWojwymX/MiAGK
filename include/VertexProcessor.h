@@ -7,7 +7,7 @@
 #pragma once
 
 #include "mathTypes.h"
-#include "Mesh.h"
+#include "Meshes/Mesh.h"
 
 class VertexProcessor {
 public:
@@ -24,8 +24,14 @@ public:
     void mulByScale(Float3 v);
     void mulByRotation(float a, Float3 v);
     std::vector<Float4> transformVertices(const std::vector<Vertex>& verts);
+    void setIdentityTransform();                         // Reset obj2world
+    void setTranslation(Float3 translation);
+    void setScale(Float3 scale);
+    void setTransform(Float3 scale, float a, Float3 rotation, Float3 translation);
 
-    
+
+
+
 
 };
 

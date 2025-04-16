@@ -7,7 +7,7 @@
 #pragma once
 
 #include <vector>
-#include "mathTypes.h"
+#include "../mathTypes.h"
 #include "Triangle.h"
 
 struct Vertex {

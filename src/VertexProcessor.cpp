@@ -114,6 +114,27 @@ std::vector<Float4> VertexProcessor::transformVertices(const std::vector<Vertex>
     return result;
 }
 
+void VertexProcessor::setIdentityTransform() {
+    obj2world.setAsIdentity();
+}
+
+void VertexProcessor::setTranslation(Float3 v) {
+    setIdentityTransform();
+    mulByTranslation(v);
+}
+
+void VertexProcessor::setScale(Float3 v) {
+    setIdentityTransform();
+    mulByScale(v);
+}
+
+void VertexProcessor::setTransform(Float3 scale, float a, Float3 rotation, Float3 translation) {
+    setIdentityTransform();
+    mulByScale(scale);
+    mulByRotation(a, rotation);
+    mulByTranslation(translation);
+}
+
 
 
 

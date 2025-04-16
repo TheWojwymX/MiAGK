@@ -4,7 +4,7 @@
 #include <vector>
 #include "../include/mathTypes.h"
 #include "../include/PixelBuffer.h"
-#include "Triangle.h"
+#include "Meshes/Triangle.h"
 #include "VertexProcessor.h"
 
 
@@ -21,6 +21,7 @@ public:
     void fillTriangles();
     void addMesh(Mesh* mesh);
     void fillMeshes();
+
 
 };
 

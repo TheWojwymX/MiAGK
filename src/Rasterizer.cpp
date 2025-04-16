@@ -16,27 +16,23 @@ void Rasterizer::fillMeshes()
 {
     for (Mesh* mesh : meshes)
     {
+        mesh->create();
         // Get transformed positions
         std::vector<Float4> transformed = vertexProcessor->transformVertices(mesh->vertices);
 
-        for (const Int3& tri : mesh->indices)
+        for (const auto& index : mesh->indices)
         {
-            const Vertex& v1 = mesh->vertices[tri.v1];
-            const Vertex& v2 = mesh->vertices[tri.v2];
-            const Vertex& v3 = mesh->vertices[tri.v3];
+            Float3 v1 = transformed[index.v1].toFloat3();
+            Float3 v2 = transformed[index.v2].toFloat3();
+            Float3 v3 = transformed[index.v3].toFloat3();
 
-            const Float4& p1 = transformed[tri.v1];
-            const Float4& p2 = transformed[tri.v2];
-            const Float4& p3 = transformed[tri.v3];
+            Float3 c1 = mesh->vertices[index.v1].vertexColor;
+            Float3 c2 = mesh->vertices[index.v2].vertexColor;
+            Float3 c3 = mesh->vertices[index.v3].vertexColor;
 
-            Triangle* triangle = new Triangle(
-                    Float3(p1.x, p1.y, p1.z),
-                    Float3(p2.x, p2.y, p2.z),
-                    Float3(p3.x, p3.y, p3.z),
-                    v1.vertexColor, v2.vertexColor, v3.vertexColor
-            );
+            Triangle* t = new Triangle(v1, v2, v3, c1, c2, c3);
+            addTriangle(t);
 
-            addTriangle(triangle);
         }
     }
 }

@@ -2,7 +2,7 @@
 // Created by TheWojwymX on 16.04.2025.
 //
 
-#include "../include/Mesh.h"
+#include "../../include/Meshes/Mesh.h"
 
 std::vector<Triangle> Mesh::generateTriangles() {
     std::vector<Triangle> triangles;

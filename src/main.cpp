@@ -3,7 +3,10 @@
 #include "../include/ImageWriter.h"
 #include "../include/mathTypes.h"
 #include "../include/Rasterizer.h"
-#include "../include/Sphere.h"
+#include "../include/Meshes/Sphere.h"
+#include "../include/Meshes/Cone.h"
+#include "../include/Meshes/Cylinder.h"
+#include "../include/Meshes/Torus.h"
 #include <cstdlib>
 #include <ctime>
 
@@ -13,31 +16,28 @@ int main() {
     ImageWriter* imageWriter = new ImageWriter();
     Rasterizer* rasterizer = new Rasterizer(pixelBuffer);
     VertexProcessor* vp = new VertexProcessor();
-    VertexProcessor* vp2 = new VertexProcessor();
 
     vp->setPerspective(120.0f, 800.0f / 600.0f, 0.1f, 1000.f);
     vp->setLookAt(Float3(0, 0, 0), Float3(0, 0, -1), Float3(0, 1, 0));
+    rasterizer->vertexProcessor = vp;
 
-    Sphere sphere(1.0f, 8, 8);
-    sphere.create();
-    vp->mulByTranslation(Float3(0.0f, 0.0f, 10.0f));
-    std::vector<Float4> transformedVerts = vp->transformVertices(sphere.vertices);
+//    Sphere* sphere = new Sphere(1.0f, 8, 8);
+//    rasterizer->addMesh(sphere);
 
-    for (const auto& index : sphere.indices)
-    {
-        Float3 v1 = transformedVerts[index.v1].toFloat3();
-        Float3 v2 = transformedVerts[index.v2].toFloat3();
-        Float3 v3 = transformedVerts[index.v3].toFloat3();
+//    Cone* cone = new Cone(1.0f, 16, 16);
+//    rasterizer->addMesh(cone);
 
-        Float3 c1 = sphere.vertices[index.v1].vertexColor;
-        Float3 c2 = sphere.vertices[index.v2].vertexColor;
-        Float3 c3 = sphere.vertices[index.v3].vertexColor;
+//    Cylinder* cylinder = new Cylinder(1.0f, 1.0f, 16, 1);
+//    rasterizer->addMesh(cylinder);
 
-        // You could improve this later by interpolating color based on normal or lighting
-        Triangle* t = new Triangle(v1, v2, v3, c1, c2, c3);
+    Torus* torus = new Torus(1.0f, 0.3f, 8, 8);
+    rasterizer->addMesh(torus);
 
-        rasterizer->addTriangle(t);
-    }
+    vp->setTransform(Float3(1.0f, 1.0f, 1.0f), 0, Float3(0.0f, 0.0f, 0.0f), Float3(0.0f, 0.0f, 10.0f));
+    rasterizer->fillMeshes();
+    rasterizer->fillTriangles();
+
+
 
 
 

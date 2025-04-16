@@ -3,7 +3,7 @@
 #define MIAGK_TRIANGLE_H
 
 
-#include "mathTypes.h"
+#include "../mathTypes.h"
 
 class Triangle {
 public:

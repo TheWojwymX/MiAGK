@@ -11,12 +11,18 @@ add_executable(MiAGK src/main.cpp
         src/ImageWriter.cpp
         include/ImageWriter.h
         include/mathTypes.h
-        src/Triangle.cpp
-        include/Triangle.h
+        src/Meshes/Triangle.cpp
+        include/Meshes/Triangle.h
         src/VertexProcessor.cpp
         include/VertexProcessor.h
-        src/Mesh.cpp
-        include/Mesh.h
-        src/Sphere.cpp
-        include/Sphere.h
-        src/Mesh.cpp)
+        src/Meshes/Mesh.cpp
+        include/Meshes/Mesh.h
+        src/Meshes/Sphere.cpp
+        include/Meshes/Sphere.h
+        src/Meshes/Mesh.cpp
+        src/Meshes/Cone.cpp
+        include/Meshes/Cone.h
+        src/Meshes/Cylinder.cpp
+        include/Meshes/Cylinder.h
+        src/Meshes/Torus.cpp
+        include/Meshes/Torus.h)
