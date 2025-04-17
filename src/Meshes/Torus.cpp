@@ -5,8 +5,12 @@
 #include "../../include/Meshes/Torus.h"
 
 
-Torus::Torus(float majorRadius, float minorRadius, int slices, int stacks)
-        : majorRadius(majorRadius), minorRadius(minorRadius), slices(slices), stacks(stacks) {}
+Torus::Torus(float majorRadius, float minorRadius, int slices, int stacks) : majorRadius(majorRadius), minorRadius(minorRadius), slices(slices), stacks(stacks)
+{
+    vertexProcessor = new VertexProcessor();
+    vertexProcessor->setPerspective(120.0f, 800.0f / 600.0f, 0.1f, 1000.f);
+    vertexProcessor->setLookAt(Float3(0, 0, 0), Float3(0, 0, -1), Float3(0, 1, 0));
+}
 
 void Torus::create() {
     float majorStep = 2.0f * M_PI / slices;

@@ -15,25 +15,26 @@ int main() {
     PixelBuffer* pixelBuffer = new PixelBuffer(0xff0000ff ,800,600);
     ImageWriter* imageWriter = new ImageWriter();
     Rasterizer* rasterizer = new Rasterizer(pixelBuffer);
-    VertexProcessor* vp = new VertexProcessor();
 
-    vp->setPerspective(120.0f, 800.0f / 600.0f, 0.1f, 1000.f);
-    vp->setLookAt(Float3(0, 0, 0), Float3(0, 0, -1), Float3(0, 1, 0));
-    rasterizer->vertexProcessor = vp;
+    Sphere* sphere = new Sphere(1.0f, 8, 8);
+    rasterizer->addMesh(sphere);
+    sphere->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 1.0f), 0, Float3(0.0f, 0.0f, 0.0f), Float3(0.0f, -5.0f, 20.0f));
 
-//    Sphere* sphere = new Sphere(1.0f, 8, 8);
-//    rasterizer->addMesh(sphere);
 
-//    Cone* cone = new Cone(1.0f, 16, 16);
-//    rasterizer->addMesh(cone);
+    Cone* cone = new Cone(1.0f, 16, 16);
+    rasterizer->addMesh(cone);
+    cone->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 2.0f), 70, Float3(1.0f, 0.0f, 0.0f), Float3(-5.0f, 0.0f, 20.0f));
 
-//    Cylinder* cylinder = new Cylinder(1.0f, 1.0f, 16, 1);
-//    rasterizer->addMesh(cylinder);
+
+    Cylinder* cylinder = new Cylinder(1.0f, 1.0f, 16, 1);
+    rasterizer->addMesh(cylinder);
+    cylinder->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 2.0f), 60, Float3(1.0f, 1.0f, 0.0f), Float3(5.0f, 0.0f, 20.0f));
 
     Torus* torus = new Torus(1.0f, 0.3f, 8, 8);
     rasterizer->addMesh(torus);
+    torus->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 1.0f), 0, Float3(0.0f, 0.0f, 0.0f), Float3(0.0f, 0.0f, 10.0f));
 
-    vp->setTransform(Float3(1.0f, 1.0f, 1.0f), 0, Float3(0.0f, 0.0f, 0.0f), Float3(0.0f, 0.0f, 10.0f));
+
     rasterizer->fillMeshes();
     rasterizer->fillTriangles();
 

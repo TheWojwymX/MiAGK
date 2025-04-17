@@ -6,6 +6,7 @@
 #define MIAGK_TORUS_H
 #pragma once
 
+#include "../../include/VertexProcessor.h"
 #include "Mesh.h"
 
 class Torus: public Mesh {

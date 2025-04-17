@@ -2,10 +2,14 @@
 // Created by TheWojwymX on 16.04.2025.
 //
 
-#include "../../include/Meshes/Cone.h"
+#include "../../Include/Meshes/Cone.h"
 
-Cone::Cone(float radius, int slices, int stacks)
-        : radius(radius), slices(slices), stacks(stacks) {}
+Cone::Cone(float radius, int slices, int stacks) : radius(radius), slices(slices), stacks(stacks)
+{
+    vertexProcessor = new VertexProcessor();
+    vertexProcessor->setPerspective(120.0f, 800.0f / 600.0f, 0.1f, 1000.f);
+    vertexProcessor->setLookAt(Float3(0, 0, 0), Float3(0, 0, -1), Float3(0, 1, 0));
+}
 
 void Cone::create() {
     float angleStep = 2.0f * M_PI / slices;

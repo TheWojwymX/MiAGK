@@ -18,7 +18,7 @@ void Rasterizer::fillMeshes()
     {
         mesh->create();
         // Get transformed positions
-        std::vector<Float4> transformed = vertexProcessor->transformVertices(mesh->vertices);
+        std::vector<Float4> transformed = mesh->vertexProcessor->transformVertices(mesh->vertices);
 
         for (const auto& index : mesh->indices)
         {

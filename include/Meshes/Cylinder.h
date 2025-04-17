@@ -4,9 +4,10 @@
 
 #ifndef MIAGK_CYLINDER_H
 #define MIAGK_CYLINDER_H
-
+#pragma once
 
 #include "Mesh.h"
+#include "../../include/VertexProcessor.h"
 
 class Cylinder: public Mesh {
 public:

@@ -10,6 +10,8 @@
 #include "../mathTypes.h"
 #include "Triangle.h"
 
+class VertexProcessor;
+
 struct Vertex {
     Float3 position;
     Float3 normal;
@@ -20,6 +22,7 @@ class Mesh {
 public:
     std::vector<Vertex> vertices;
     std::vector<Int3> indices;
+    VertexProcessor* vertexProcessor;
 
     virtual void create() = 0;
     std::vector<Triangle> generateTriangles();
