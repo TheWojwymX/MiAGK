@@ -32,4 +32,6 @@ add_executable(MiAGK src/main.cpp
         include/Light/DirectionalLight.h
         src/Light/PointLight.cpp
         include/Light/PointLight.h
+        src/Light/Spotlight.cpp
+        include/Light/Spotlight.h
 )
