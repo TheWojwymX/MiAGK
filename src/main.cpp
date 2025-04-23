@@ -8,6 +8,7 @@
 #include "../include/Meshes/Cylinder.h"
 #include "../include/Meshes/Torus.h"
 #include "../include/Light/DirectionalLight.h"
+#include "../include/Light/PointLight.h"
 #include <cstdlib>
 #include <ctime>
 
@@ -24,7 +25,7 @@ int main() {
 
     Cone* cone = new Cone(1.0f, 16, 16);
     rasterizer->addMesh(cone);
-    cone->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 2.0f), 90, Float3(0.0f, 1.0f, 1.0f), Float3(-5.0f, 0.0f, 20.0f));
+    cone->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 2.0f), 90, Float3(1.0f, 0.0f, 0.0f), Float3(-5.0f, 0.0f, 20.0f));
 
 
     Cylinder* cylinder = new Cylinder(1.0f, 1.0f, 16, 1);
@@ -41,12 +42,21 @@ int main() {
     DirectionalLight* light = new DirectionalLight(Float3(0.0, 0, 0.0), Float3(0.05f, 0.05f, 0.05f),
                                                    Float3(1.0f,1.0f,0.5f), Float3(0.0f, 0.0f, 1.0f),
                                                    32, lightdir);
+    PointLight* pointLight = new PointLight(Float3(100, 0, 20.0), Float3(0.05f, 0.05f, 0.05f),
+                                                   Float3(1.0f,1.0f,0.5f), Float3(0.0f, 0.0f, 1.0f),
+                                                   32);
 
-    //Adding light
-    cylinder->vertexProcessor->addLight(light);
-    cone->vertexProcessor->addLight(light);
-    sphere->vertexProcessor->addLight(light);
-    torus->vertexProcessor->addLight(light);
+//    Adding light - directional
+//    cylinder->vertexProcessor->addLight(light);
+//    cone->vertexProcessor->addLight(light);
+//    sphere->vertexProcessor->addLight(light);
+//    torus->vertexProcessor->addLight(light);
+
+//    Adding light - point
+    cylinder->vertexProcessor->addLight(pointLight);
+    cone->vertexProcessor->addLight(pointLight);
+    sphere->vertexProcessor->addLight(pointLight);
+    torus->vertexProcessor->addLight(pointLight);
 
 
 

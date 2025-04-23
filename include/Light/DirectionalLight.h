@@ -16,7 +16,7 @@ public:
     DirectionalLight(const Float3 &position, const Float3 &ambient, const Float3 &diffuse, const Float3 &specular,
                      float shininess, const Float3 &direction);
 
-    Float3 calculate(VertexProcessor& vp, const Float3& position, const Float3& normal) override;
+    Float3 calculate(VertexProcessor& vp, const Float3& pointPosition, const Float3& normal) override;
 
 
 };

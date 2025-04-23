@@ -20,7 +20,7 @@ public:
     Light(const Float3 &position, const Float3 &ambient, const Float3 &diffuse, const Float3 &specular,
           float shininess);
 
-    virtual Float3 calculate(VertexProcessor& vp, const Float3& position, const Float3& normal) = 0;
+    virtual Float3 calculate(VertexProcessor& vp, const Float3& pointPosition, const Float3& normal) = 0;
 
 };
 

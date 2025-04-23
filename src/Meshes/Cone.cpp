@@ -19,15 +19,18 @@ void Cone::create() {
     // Generate side vertices
     for (int j = 0; j <= stacks; ++j) {
         float z = j * heightStep;              // Height [0,1]
-        float r = radius * (1.0f - float(j) / stacks);  // Radius decreases linearly
+        float rr = radius * (1.0f - float(j) / stacks);  // Radius decreases linearly
 
         for (int i = 0; i < slices; ++i) {
             float angle = i * angleStep;
-            float x = r * cos(angle);
-            float y = r * sin(angle);
+            float x = rr * cos(angle);
+            float y = rr * sin(angle);
 
             Float3 pos(x, y, z);
-            Float3 normal(x, y, z - radius);
+            Float3 nextPos(rr * cos(angle + angleStep), rr * sin(angle + angleStep), z);
+            Float3 edge1 = nextPos - pos;
+            Float3 edge2 = Float3(0.0f, 0.0f, 1.0f) - pos;  // Apex is at (0, 0, 1) for now
+            Float3 normal = edge1.cross(edge2);
             normal.normalize();
 
             float r = static_cast<float>(rand()) / RAND_MAX;
