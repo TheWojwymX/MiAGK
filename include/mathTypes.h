@@ -58,9 +58,10 @@ public:
         return {x * other.x, y * other.y, z * other.z};
     }
 
-    Float3 float4to3() {
-
+    float dot(const Float3 &other) const {
+        return x * other.x + y * other.y + z * other.z;
     }
+
 };
 
 class Float4 {
@@ -222,6 +223,10 @@ public:
     }
 
 };
+
+inline Float3 operator*(float s, const Float3 &v) {
+    return v * s;
+}
 
 
 #endif //MIAGK_MATHTYPES_H

@@ -7,6 +7,7 @@
 #include "../include/Meshes/Cone.h"
 #include "../include/Meshes/Cylinder.h"
 #include "../include/Meshes/Torus.h"
+#include "../include/Light/DirectionalLight.h"
 #include <cstdlib>
 #include <ctime>
 
@@ -23,16 +24,31 @@ int main() {
 
     Cone* cone = new Cone(1.0f, 16, 16);
     rasterizer->addMesh(cone);
-    cone->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 2.0f), 70, Float3(1.0f, 0.0f, 0.0f), Float3(-5.0f, 0.0f, 20.0f));
+    cone->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 2.0f), 90, Float3(0.0f, 1.0f, 1.0f), Float3(-5.0f, 0.0f, 20.0f));
 
 
     Cylinder* cylinder = new Cylinder(1.0f, 1.0f, 16, 1);
     rasterizer->addMesh(cylinder);
-    cylinder->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 2.0f), 60, Float3(1.0f, 1.0f, 0.0f), Float3(5.0f, 0.0f, 20.0f));
+    cylinder->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 2.0f), 90, Float3(1.0f, 0.0f, 0.0f), Float3(5.0f, 0.0f, 20.0f));
 
     Torus* torus = new Torus(1.0f, 0.3f, 8, 8);
     rasterizer->addMesh(torus);
     torus->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 1.0f), 0, Float3(0.0f, 0.0f, 0.0f), Float3(0.0f, 0.0f, 10.0f));
+
+    Float3 lightdir(0.0f, 0.0f, 1.0f);
+    lightdir.normalize();
+
+    DirectionalLight* light = new DirectionalLight(Float3(0.0, 0, 0.0), Float3(0.05f, 0.05f, 0.05f),
+                                                   Float3(1.0f,1.0f,0.5f), Float3(0.0f, 0.0f, 1.0f),
+                                                   32, lightdir);
+
+    //Adding light
+    cylinder->vertexProcessor->addLight(light);
+    cone->vertexProcessor->addLight(light);
+    sphere->vertexProcessor->addLight(light);
+    torus->vertexProcessor->addLight(light);
+
+
 
 
     rasterizer->fillMeshes();

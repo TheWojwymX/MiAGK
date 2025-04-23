@@ -137,6 +137,17 @@ void VertexProcessor::setTransform(Float3 scale, float a, Float3 rotation, Float
 
 
 
+void VertexProcessor::addLight(Light* light)
+{
+    lights.push_back(light);
+}
+
+const std::vector<Light*>& VertexProcessor::getLights() const
+{
+    return lights;
+}
+
+
 
 
 

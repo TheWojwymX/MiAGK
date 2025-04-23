@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <ctime>
+#include <algorithm>
 #include "../../include/Meshes/Sphere.h"
 
 Sphere::Sphere(float radius, int slices, int stacks)
@@ -35,7 +36,7 @@ void Sphere::create()
             float x = r * cos(theta);
             float z = r * sin(theta);
 
-            Float3 pos = Float3(x, y, z) * radius;
+            Float3 pos = Float3(-x, -y, -z) * radius;
             Float3 pos_norm = pos;
             pos_norm.normalize();
 
@@ -55,6 +56,26 @@ void Sphere::create()
             indices.push_back(Int3(a, b, a + 1));
             indices.push_back(Int3(b, b + 1, a + 1));
         }
+    }
+
+    for (auto& v : vertices)
+    {
+        Float4 worldPos4 = vertexProcessor->obj2world * Float4(v.position.x, v.position.y, v.position.z, 1.0f);
+        Float3 worldPos = worldPos4.toFloat3();
+
+        Float4 worldNormal4 = vertexProcessor->obj2world * Float4(v.normal.x, v.normal.y, v.normal.z, 0.0f);
+        Float3 worldNormal = worldNormal4.toFloat3();
+        worldNormal.normalize();
+
+        Float3 color(0, 0, 0);
+        for (Light* light : vertexProcessor->getLights())
+        {
+            color = color + light->calculate(*vertexProcessor, worldPos, worldNormal) * v.vertexColor;
+        }
+        color.r = std::clamp(color.r, 0.0f, 1.0f);
+        color.g = std::clamp(color.g, 0.0f, 1.0f);
+        color.b = std::clamp(color.b, 0.0f, 1.0f);
+        v.vertexColor = color;
     }
 }
 

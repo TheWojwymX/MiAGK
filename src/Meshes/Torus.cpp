@@ -2,6 +2,7 @@
 // Created by TheWojwymX on 16.04.2025.
 //
 
+#include <algorithm>
 #include "../../include/Meshes/Torus.h"
 
 
@@ -55,5 +56,25 @@ void Torus::create() {
             // Top face triangle
             indices.push_back(Int3(next, nextNext, currentNext));
         }
+    }
+
+    for (auto& v : vertices)
+    {
+        Float4 worldPos4 = vertexProcessor->obj2world * Float4(v.position.x, v.position.y, v.position.z, 1.0f);
+        Float3 worldPos = worldPos4.toFloat3();
+
+        Float4 worldNormal4 = vertexProcessor->obj2world * Float4(v.normal.x, v.normal.y, v.normal.z, 0.0f);
+        Float3 worldNormal = worldNormal4.toFloat3();
+        worldNormal.normalize();
+
+        Float3 color(0, 0, 0);
+        for (Light* light : vertexProcessor->getLights())
+        {
+            color = color + light->calculate(*vertexProcessor, worldPos, worldNormal) * v.vertexColor;
+        }
+        color.r = std::clamp(color.r, 0.0f, 1.0f);
+        color.g = std::clamp(color.g, 0.0f, 1.0f);
+        color.b = std::clamp(color.b, 0.0f, 1.0f);
+        v.vertexColor = color;
     }
 }

@@ -2,6 +2,7 @@
 // Created by TheWojwymX on 16.04.2025.
 //
 
+#include <algorithm>
 #include "../../Include/Meshes/Cone.h"
 
 Cone::Cone(float radius, int slices, int stacks) : radius(radius), slices(slices), stacks(stacks)
@@ -26,7 +27,7 @@ void Cone::create() {
             float y = r * sin(angle);
 
             Float3 pos(x, y, z);
-            Float3 normal(x, y, radius);  // Approximated normal
+            Float3 normal(x, y, z - radius);
             normal.normalize();
 
             float r = static_cast<float>(rand()) / RAND_MAX;
@@ -70,5 +71,25 @@ void Cone::create() {
         indices.push_back(Int3(next, current, baseCenterIndex));
 
         vertices[current].vertexColor = Float3(0.0f, 0.0f, 0.0f);
+    }
+
+    for (auto& v : vertices)
+    {
+        Float4 worldPos4 = vertexProcessor->obj2world * Float4(v.position.x, v.position.y, v.position.z, 1.0f);
+        Float3 worldPos = worldPos4.toFloat3();
+
+        Float4 worldNormal4 = vertexProcessor->obj2world * Float4(v.normal.x, v.normal.y, v.normal.z, 0.0f);
+        Float3 worldNormal = worldNormal4.toFloat3();
+        worldNormal.normalize();
+
+        Float3 color(0, 0, 0);
+        for (Light* light : vertexProcessor->getLights())
+        {
+            color = color + light->calculate(*vertexProcessor, worldPos, worldNormal) * v.vertexColor;
+        }
+        color.r = std::clamp(color.r, 0.0f, 1.0f);
+        color.g = std::clamp(color.g, 0.0f, 1.0f);
+        color.b = std::clamp(color.b, 0.0f, 1.0f);
+        v.vertexColor = color;
     }
 }

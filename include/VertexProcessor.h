@@ -8,12 +8,17 @@
 
 #include "mathTypes.h"
 #include "Meshes/Mesh.h"
+#include "Light/Light.h"
+
+class Light;
 
 class VertexProcessor {
 public:
     Float4x4 view2proj;
     Float4x4 world2view;
     Float4x4 obj2world;
+    std::vector<Light*> lights;
+
 
     VertexProcessor();
     VertexProcessor(const Float4x4& view2proj);
@@ -28,6 +33,9 @@ public:
     void setTranslation(Float3 translation);
     void setScale(Float3 scale);
     void setTransform(Float3 scale, float a, Float3 rotation, Float3 translation);
+    Float3 transformNormal(const Float3& normal);
+    void addLight(Light* light);
+    const std::vector<Light*>& getLights() const;
 
 
 
