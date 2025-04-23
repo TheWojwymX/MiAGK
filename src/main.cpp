@@ -19,7 +19,7 @@ int main() {
     ImageWriter* imageWriter = new ImageWriter();
     Rasterizer* rasterizer = new Rasterizer(pixelBuffer);
 
-    Sphere* sphere = new Sphere(1.0f, 8, 8);
+    Sphere* sphere = new Sphere(1.0f, 32, 32);
     rasterizer->addMesh(sphere);
     sphere->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 1.0f), 0, Float3(0.0f, 0.0f, 0.0f), Float3(0.0f, -5.0f, 20.0f));
 
