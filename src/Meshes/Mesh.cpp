@@ -3,6 +3,7 @@
 //
 
 #include "../../include/Meshes/Mesh.h"
+#include "../../include/Meshes/Triangle.h"
 
 std::vector<Triangle> Mesh::generateTriangles() {
     std::vector<Triangle> triangles;

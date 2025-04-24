@@ -4,7 +4,7 @@
 
 #ifndef MIAGK_SPHERE_H
 #define MIAGK_SPHERE_H
-
+#pragma once
 
 #include "Mesh.h"
 #include "../VertexProcessor.h"

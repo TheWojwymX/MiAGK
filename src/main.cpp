@@ -29,16 +29,16 @@ int main() {
     cone->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 2.0f), 90, Float3(1.0f, 0.0f, 0.0f), Float3(-5.0f, 0.0f, 5.0f));
 
 
-    Cylinder* cylinder = new Cylinder(1.0f, 1.0f, 16, 1);
+    Cylinder* cylinder = new Cylinder(1.0f, 1.0f, 16, 16);
     rasterizer->addMesh(cylinder);
     cylinder->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 2.0f), 90, Float3(1.0f, 0.0f, 0.0f), Float3(5.0f, 0.0f, 15.0f));
 
-    Torus* torus = new Torus(1.0f, 0.3f, 8, 8);
+    Torus* torus = new Torus(1.0f, 0.3f, 32, 32);
     rasterizer->addMesh(torus);
-    torus->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 1.0f), 45, Float3(0.0f, 1.0f, 0.0f), Float3(0.0f, 0.0f, 10.0f));
+    torus->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 1.0f), 0, Float3(1.0f, 1.0f, 0.0f), Float3(0.0f, 0.0f, 10.0f));
 
     Float3 directionalDir(1.0f, 0.0f, 0.0f);
-    Float3 spotlightDir(0.1f, 0.0f, 1.0f);
+    Float3 spotlightDir(0.0f, 0.0f, 1.0f);
 
     directionalDir.normalize();
     spotlightDir.normalize();
@@ -46,10 +46,10 @@ int main() {
     DirectionalLight* light = new DirectionalLight(Float3(100.0, 0, 0.0), Float3(0.05f, 0.05f, 0.05f),
                                                    Float3(1.0f,1.0f,0.5f), Float3(0.0f, 0.0f, 1.0f),
                                                    32, directionalDir);
-    PointLight* pointLight = new PointLight(Float3(100, 0, 20.0), Float3(0.05f, 0.05f, 0.05f),
+    PointLight* pointLight = new PointLight(Float3(20, 0, 20.0), Float3(0.05f, 0.05f, 0.05f),
                                                    Float3(1.0f,1.0f,0.5f), Float3(0.0f, 0.0f, 1.0f),
                                                    32);
-    Spotlight* spotlight = new Spotlight(Float3(0, -5, 15.0), Float3(0.05f, 0.05f, 0.05f),
+    Spotlight* spotlight = new Spotlight(Float3(0, -5, 15), Float3(0.05f, 0.05f, 0.05f),
                                          Float3(1.0f,1.0f,0.5f), Float3(0.0f, 0.0f, 1.0f),
                                          32, spotlightDir, 30, 60);
 
@@ -61,10 +61,10 @@ int main() {
     torus->vertexProcessor->addLight(light);
 
 //    Adding light - point
-//    cylinder->vertexProcessor->addLight(pointLight);
-//    cone->vertexProcessor->addLight(pointLight);
-//    sphere->vertexProcessor->addLight(pointLight);
-//    torus->vertexProcessor->addLight(pointLight);
+    cylinder->vertexProcessor->addLight(pointLight);
+    cone->vertexProcessor->addLight(pointLight);
+    sphere->vertexProcessor->addLight(pointLight);
+    torus->vertexProcessor->addLight(pointLight);
 
 //    Adding light - spotlight
     cylinder->vertexProcessor->addLight(spotlight);
@@ -72,19 +72,13 @@ int main() {
     sphere->vertexProcessor->addLight(spotlight);
     torus->vertexProcessor->addLight(spotlight);
 
-
-
+    // Shading type
+    cylinder->isGouraud = false;
+    cone->isGouraud = false;
+//    sphere->isGouraud = false;
+    torus->isGouraud = false;
 
     rasterizer->fillMeshes();
-    rasterizer->fillTriangles();
-
-
-
-
-
-
-
-
     rasterizer->fillTriangles();
 
     imageWriter->saveToFile(pixelBuffer, "test.tga");

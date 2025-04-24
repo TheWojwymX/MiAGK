@@ -4,7 +4,7 @@
 
 #ifndef MIAGK_POINTLIGHT_H
 #define MIAGK_POINTLIGHT_H
-
+#pragma once
 
 #include "Light.h"
 

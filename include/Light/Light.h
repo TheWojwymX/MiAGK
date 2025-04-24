@@ -6,7 +6,6 @@
 #define MIAGK_LIGHT_H
 #pragma once
 
-#include "../mathTypes.h"
 #include "../VertexProcessor.h"
 
 class Light {

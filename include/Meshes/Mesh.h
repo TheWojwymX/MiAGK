@@ -6,11 +6,8 @@
 #define MIAGK_MESH_H
 #pragma once
 
-#include <vector>
 #include "../mathTypes.h"
-#include "Triangle.h"
-
-class VertexProcessor;
+#include <vector>
 
 struct Vertex {
     Float3 position;
@@ -18,11 +15,15 @@ struct Vertex {
     Float3 vertexColor;
 };
 
+class VertexProcessor;
+class Triangle;
+
 class Mesh {
 public:
     std::vector<Vertex> vertices;
     std::vector<Int3> indices;
     VertexProcessor* vertexProcessor;
+    bool isGouraud = true;
 
     virtual void create() = 0;
     std::vector<Triangle> generateTriangles();

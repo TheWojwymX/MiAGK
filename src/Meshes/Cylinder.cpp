@@ -84,6 +84,7 @@ void Cylinder::create() {
         indices.push_back(Int3(topCenterIndex, curr, next));
     }
 
+
     for (auto& v : vertices)
     {
         Float4 worldPos4 = vertexProcessor->obj2world * Float4(v.position.x, v.position.y, v.position.z, 1.0f);
@@ -92,6 +93,8 @@ void Cylinder::create() {
         Float4 worldNormal4 = vertexProcessor->obj2world * Float4(v.normal.x, v.normal.y, v.normal.z, 0.0f);
         Float3 worldNormal = worldNormal4.toFloat3();
         worldNormal.normalize();
+
+        if(isGouraud == false) continue;
 
         Float3 color(0, 0, 0);
         for (Light* light : vertexProcessor->getLights())

@@ -31,8 +31,22 @@ void Rasterizer::fillMeshes()
             Float3 c3 = mesh->vertices[index.v3].vertexColor;
 
             Triangle* t = new Triangle(v1, v2, v3, c1, c2, c3);
-            addTriangle(t);
+            t->n1 = mesh->vertices[index.v1].normal;
+            t->n2 = mesh->vertices[index.v2].normal;
+            t->n3 = mesh->vertices[index.v3].normal;
 
+            t->p1 = mesh->vertices[index.v1].position;
+            t->p2 = mesh->vertices[index.v2].position;
+            t->p3 = mesh->vertices[index.v3].position;
+
+            t->vp = mesh->vertexProcessor;
+
+            if(mesh->isGouraud == false)
+            {
+                t->isGouraud = false;
+            }
+
+            addTriangle(t);
         }
     }
 }
@@ -95,7 +109,28 @@ void Rasterizer::fillTriangles()
                     float depth = k1 * v1z + k2 * v2z + k3 * v3z;
                     if(depth < zBuffer[x + y * width]) continue;
 
-                    Float3 color = triangles[i]->c1 * k1 + triangles[i]->c2 * k2 + triangles[i]->c3 * k3;
+                    Float3 color(0, 0, 0);
+
+                    if(triangles[i]->isGouraud == true)
+                    {
+                        color = triangles[i]->c1 * k1 + triangles[i]->c2 * k2 + triangles[i]->c3 * k3;
+                    }
+                    else
+                    {
+                        Float3 interpNormal = triangles[i]->n1 * k1 + triangles[i]->n2 * k2 + triangles[i]->n3 * k3;
+                        interpNormal.normalize();
+                        Float3 interpPosition = triangles[i]->p1 * k1 + triangles[i]->p2 * k2 + triangles[i]->p3 * k3;
+
+                        std::vector<Light*> lights = triangles[i]->vp->lights;
+                        for(Light* light: lights)
+                        {
+                            color = color + light->calculate(*triangles[i]->vp, interpPosition, interpNormal) * (triangles[i]->c1 * k1 + triangles[i]->c2 * k2 + triangles[i]->c3 * k3);
+                        }
+
+                        color.r = std::clamp(color.r, 0.0f, 1.0f);
+                        color.g = std::clamp(color.g, 0.0f, 1.0f);
+                        color.b = std::clamp(color.b, 0.0f, 1.0f);
+                    }
                     unsigned int hexColor = (0xFF << 24) | ((unsigned char)(color.r * 255.0f) << 16)
                             | ((unsigned char)(color.g * 255.0f) << 8) | (unsigned char)(color.b * 255.0f) ;
                     buffer[x + y * width] = hexColor;

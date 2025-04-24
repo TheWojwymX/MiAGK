@@ -1,7 +1,8 @@
 #ifndef MIAGK_MATHTYPES_H
 #define MIAGK_MATHTYPES_H
-#define M_PI 3.14159265358979323846
+#pragma once
 
+#define M_PI 3.14159265358979323846
 #include <cmath>
 
 class Float3 {
