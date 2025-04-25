@@ -40,6 +40,7 @@ void Rasterizer::fillMeshes()
 
             Triangle* t = new Triangle(v1, v2, v3, c1, c2, c3);
             t->vp = mesh->vertexProcessor;
+            t->usePhongShading = mesh->usePhongShading;
             t->n1 = normal1;
             t->n2 = normal2;
             t->n3 = normal3;
@@ -115,26 +116,12 @@ void Rasterizer::fillTriangles()
 
                     Float3 color(0,0,0);
 
-                    if(usePhongShading == false)
+                    if(tri->usePhongShading == false)
                     {
                         color = triangles[i]->c1 * k1 + triangles[i]->c2 * k2 + triangles[i]->c3 * k3;
                     }
                     else
                     {
-                        Float3 interpNormal = triangles[i]->n1 * k1 + triangles[i]->n2 * k2 + triangles[i]->n3 * k3;
-                        interpNormal.normalize();
-                        Float3 interpPosition = triangles[i]->p1 * k1 + triangles[i]->p2 * k2 + triangles[i]->p3 * k3;
-
-                        std::vector<Light*> lights = triangles[i]->vp->lights;
-                        for(Light* light: lights)
-                        {
-                            color = color + light->calculate(*triangles[i]->vp, interpPosition, interpNormal) * (triangles[i]->c1 * k1 + triangles[i]->c2 * k2 + triangles[i]->c3 * k3);
-                        }
-
-                        color.r = std::clamp(color.r, 0.0f, 1.0f);
-                        color.g = std::clamp(color.g, 0.0f, 1.0f);
-                        color.b = std::clamp(color.b, 0.0f, 1.0f);
-                    }
                         Float3 interpolatedNormal = triangles[i]->n1 * k1 + triangles[i]->n2 * k2 + triangles[i]->n3 * k3;
                         interpolatedNormal.normalize();
 
@@ -146,10 +133,9 @@ void Rasterizer::fillTriangles()
                         for (Light* light : lights)
                         {
                             color = color + light->calculate(*triangles[i]->vp, interpolatedWorldPos, interpolatedNormal)
-                                    * (triangles[i]->c1 * k1 + triangles[i]->c2 * k2 + triangles[i]->c3 * k3);
+                                            * (triangles[i]->c1 * k1 + triangles[i]->c2 * k2 + triangles[i]->c3 * k3);
                         }
                     }
-
                     color.r = std::clamp(color.r, 0.0f, 1.0f);
                     color.g = std::clamp(color.g, 0.0f, 1.0f);
                     color.b = std::clamp(color.b, 0.0f, 1.0f);

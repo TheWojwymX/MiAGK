@@ -85,8 +85,6 @@ void Cone::create() {
         Float3 worldNormal = worldNormal4.toFloat3();
         worldNormal.normalize();
 
-        if(isGouraud == false) continue;
-
         Float3 color(0, 0, 0);
         for (Light* light : vertexProcessor->getLights())
         {

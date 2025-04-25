@@ -13,17 +13,12 @@ class VertexProcessor;
 
 class Triangle {
 public:
-    bool isGouraud = true;
-    VertexProcessor* vp;
-
     Float3 v1, v2, v3;
     Float3 c1, c2, c3;
     Float3 n1, n2, n3;
     Float3 w1, w2, w3;
     VertexProcessor* vp;
-
-    Float3 n1, n2, n3;
-    Float3 p1, p2, p3;
+    bool usePhongShading = false;
 
     Triangle(Float3 v1, Float3 v2, Float3 v3, Float3 c1, Float3 c2, Float3 c3);
 };

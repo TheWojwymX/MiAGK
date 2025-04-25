@@ -84,6 +84,7 @@ void Cylinder::create() {
         indices.push_back(Int3(topCenterIndex, curr, next));
     }
 
+    if(usePhongShading) return;
 
     for (auto& v : vertices)
     {
@@ -94,7 +95,6 @@ void Cylinder::create() {
         Float3 worldNormal = worldNormal4.toFloat3();
         worldNormal.normalize();
 
-        if(isGouraud == false) continue;
 
         Float3 color(0, 0, 0);
         for (Light* light : vertexProcessor->getLights())

@@ -18,7 +18,6 @@ int main() {
     PixelBuffer* pixelBuffer = new PixelBuffer(0xff0000ff ,800,600);
     ImageWriter* imageWriter = new ImageWriter();
     Rasterizer* rasterizer = new Rasterizer(pixelBuffer);
-    rasterizer->usePhongShading = false;
 
     Sphere* sphere = new Sphere(1.0f, 32, 32);
     rasterizer->addMesh(sphere);
@@ -36,9 +35,9 @@ int main() {
 
     Torus* torus = new Torus(1.0f, 0.3f, 32, 32);
     rasterizer->addMesh(torus);
-    torus->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 1.0f), 0, Float3(1.0f, 1.0f, 0.0f), Float3(0.0f, 0.0f, 10.0f));
+    torus->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 1.0f), 90, Float3(1.0f, 0.0f, 0.0f), Float3(0.0f, 0.0f, 10.0f));
 
-    Float3 directionalDir(1.0f, 0.0f, 0.0f);
+    Float3 directionalDir(0.0f, 0.0f, 0.0f);
     Float3 spotlightDir(0.0f, 0.0f, 1.0f);
 
     directionalDir.normalize();
@@ -62,16 +61,23 @@ int main() {
     torus->vertexProcessor->addLight(light);
 
 //    Adding light - point
-    cylinder->vertexProcessor->addLight(pointLight);
-    cone->vertexProcessor->addLight(pointLight);
-    sphere->vertexProcessor->addLight(pointLight);
-    torus->vertexProcessor->addLight(pointLight);
+//    cylinder->vertexProcessor->addLight(pointLight);
+//    cone->vertexProcessor->addLight(pointLight);
+//    sphere->vertexProcessor->addLight(pointLight);
+//    torus->vertexProcessor->addLight(pointLight);
 
 //    Adding light - spotlight
-    cylinder->vertexProcessor->addLight(spotlight);
+//    cylinder->vertexProcessor->addLight(spotlight);
     cone->vertexProcessor->addLight(spotlight);
     sphere->vertexProcessor->addLight(spotlight);
-    torus->vertexProcessor->addLight(spotlight);
+//    torus->vertexProcessor->addLight(spotlight);
+
+
+//    cylinder->usePhongShading = true;
+//    cone->usePhongShading = true;
+//    sphere->usePhongShading = true;
+//    torus->usePhongShading = true;
+
 
     rasterizer->fillMeshes();
     rasterizer->fillTriangles();

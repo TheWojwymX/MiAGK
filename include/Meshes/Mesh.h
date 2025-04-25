@@ -23,7 +23,7 @@ public:
     std::vector<Vertex> vertices;
     std::vector<Int3> indices;
     VertexProcessor* vertexProcessor;
-    bool isGouraud = true;
+    bool usePhongShading = false;
 
     virtual void create() = 0;
 };
