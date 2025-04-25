@@ -18,6 +18,7 @@ int main() {
     PixelBuffer* pixelBuffer = new PixelBuffer(0xff0000ff ,800,600);
     ImageWriter* imageWriter = new ImageWriter();
     Rasterizer* rasterizer = new Rasterizer(pixelBuffer);
+    rasterizer->usePhongShading = false;
 
     Sphere* sphere = new Sphere(1.0f, 32, 32);
     rasterizer->addMesh(sphere);
@@ -51,7 +52,7 @@ int main() {
                                                    32);
     Spotlight* spotlight = new Spotlight(Float3(0, -5, 15), Float3(0.05f, 0.05f, 0.05f),
                                          Float3(1.0f,1.0f,0.5f), Float3(0.0f, 0.0f, 1.0f),
-                                         32, spotlightDir, 30, 60);
+                                         32, spotlightDir, 15, 30);
 
 
 //    Adding light - directional
@@ -71,12 +72,6 @@ int main() {
     cone->vertexProcessor->addLight(spotlight);
     sphere->vertexProcessor->addLight(spotlight);
     torus->vertexProcessor->addLight(spotlight);
-
-    // Shading type
-    cylinder->isGouraud = false;
-    cone->isGouraud = false;
-//    sphere->isGouraud = false;
-    torus->isGouraud = false;
 
     rasterizer->fillMeshes();
     rasterizer->fillTriangles();

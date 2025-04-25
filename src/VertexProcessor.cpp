@@ -147,6 +147,15 @@ const std::vector<Light*>& VertexProcessor::getLights() const
     return lights;
 }
 
+Float3 VertexProcessor::transformNormal(const Float3& normal) {
+    // Zakładamy, że world2view to view matrix, ignorujemy translację
+    Float4 n = Float4(normal.x, normal.y, normal.z, 0.0f); // wektor, nie punkt!
+    Float4 transformed = world2view * n;
+    Float3 result = Float3(transformed.x, transformed.y, transformed.z);
+    result.normalize();
+    return result; // zakładamy, że Float3 ma .normalized()
+}
+
 
 
 

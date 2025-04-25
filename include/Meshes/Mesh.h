@@ -26,7 +26,6 @@ public:
     bool isGouraud = true;
 
     virtual void create() = 0;
-    std::vector<Triangle> generateTriangles();
 };
 
 

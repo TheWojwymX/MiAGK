@@ -80,6 +80,14 @@ public:
 
     }
 
+    Float4(const Float3& vector, float w)
+    {
+        x = vector.x;
+        y = vector.y;
+        z = vector.z;
+        this->w = w;
+    }
+
     Float4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {
 
     }

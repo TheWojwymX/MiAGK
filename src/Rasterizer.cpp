@@ -30,22 +30,23 @@ void Rasterizer::fillMeshes()
             Float3 c2 = mesh->vertices[index.v2].vertexColor;
             Float3 c3 = mesh->vertices[index.v3].vertexColor;
 
+            Float3 normal1 = mesh->vertexProcessor->transformNormal(mesh->vertices[index.v1].normal);
+            Float3 normal2 = mesh->vertexProcessor->transformNormal(mesh->vertices[index.v2].normal);
+            Float3 normal3 = mesh->vertexProcessor->transformNormal(mesh->vertices[index.v3].normal);
+
+            Float3 world1 = (mesh->vertexProcessor->obj2world * Float4(mesh->vertices[index.v1].position, 1.0f)).toFloat3();
+            Float3 world2 = (mesh->vertexProcessor->obj2world * Float4(mesh->vertices[index.v2].position, 1.0f)).toFloat3();
+            Float3 world3 = (mesh->vertexProcessor->obj2world * Float4(mesh->vertices[index.v3].position, 1.0f)).toFloat3();
+
             Triangle* t = new Triangle(v1, v2, v3, c1, c2, c3);
-            t->n1 = mesh->vertices[index.v1].normal;
-            t->n2 = mesh->vertices[index.v2].normal;
-            t->n3 = mesh->vertices[index.v3].normal;
-
-            t->p1 = mesh->vertices[index.v1].position;
-            t->p2 = mesh->vertices[index.v2].position;
-            t->p3 = mesh->vertices[index.v3].position;
-
             t->vp = mesh->vertexProcessor;
-
-            if(mesh->isGouraud == false)
-            {
-                t->isGouraud = false;
-            }
-
+            t->n1 = normal1;
+            t->n2 = normal2;
+            t->n3 = normal3;
+            t->w1 = world1;
+            t->w2 = world2;
+            t->w3 = world3;
+			
             addTriangle(t);
         }
     }
@@ -60,6 +61,8 @@ void Rasterizer::fillTriangles()
 
     for(int i = 0; i < triangles.size(); i++)
     {
+        Triangle* tri = triangles[i];
+
         int v1x = (triangles[i]->v1.x + 1) * width * 0.5f;
         int v1y = (triangles[i]->v1.y + 1) * height * 0.5f;
         int v1z = (triangles[i]->v1.z + 1) * width * 0.5f;
@@ -109,9 +112,10 @@ void Rasterizer::fillTriangles()
                     float depth = k1 * v1z + k2 * v2z + k3 * v3z;
                     if(depth < zBuffer[x + y * width]) continue;
 
-                    Float3 color(0, 0, 0);
 
-                    if(triangles[i]->isGouraud == true)
+                    Float3 color(0,0,0);
+
+                    if(usePhongShading == false)
                     {
                         color = triangles[i]->c1 * k1 + triangles[i]->c2 * k2 + triangles[i]->c3 * k3;
                     }
@@ -131,6 +135,25 @@ void Rasterizer::fillTriangles()
                         color.g = std::clamp(color.g, 0.0f, 1.0f);
                         color.b = std::clamp(color.b, 0.0f, 1.0f);
                     }
+                        Float3 interpolatedNormal = triangles[i]->n1 * k1 + triangles[i]->n2 * k2 + triangles[i]->n3 * k3;
+                        interpolatedNormal.normalize();
+
+                        Float3 interpolatedWorldPos = triangles[i]->w1 * k1 + triangles[i]->w2 * k2 + triangles[i]->w3 * k3;
+
+                        std::vector<Light*> lights = triangles[i]->vp->lights;
+
+                        color = Float3(0, 0, 0);
+                        for (Light* light : lights)
+                        {
+                            color = color + light->calculate(*triangles[i]->vp, interpolatedWorldPos, interpolatedNormal)
+                                    * (triangles[i]->c1 * k1 + triangles[i]->c2 * k2 + triangles[i]->c3 * k3);
+                        }
+                    }
+
+                    color.r = std::clamp(color.r, 0.0f, 1.0f);
+                    color.g = std::clamp(color.g, 0.0f, 1.0f);
+                    color.b = std::clamp(color.b, 0.0f, 1.0f);
+
                     unsigned int hexColor = (0xFF << 24) | ((unsigned char)(color.r * 255.0f) << 16)
                             | ((unsigned char)(color.g * 255.0f) << 8) | (unsigned char)(color.b * 255.0f) ;
                     buffer[x + y * width] = hexColor;
