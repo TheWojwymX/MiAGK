@@ -42,7 +42,7 @@ Float3 Spotlight::calculate(VertexProcessor& vp, const Float3& pointPosition, co
     }
 
     // 6. If the point is within the spotlight's inner cone, use full diffuse and specular contribution
-    float spotFactor = 2.0f;
+    float spotFactor = 1.0f;
     if (cosTheta < cos(innerRadians)) {
         // Blend the intensity based on the angle within the cone
         spotFactor = pow(cosTheta, 20); // Adjust 20 for smoothness of transition (falloff)

@@ -18,6 +18,7 @@ int main() {
     PixelBuffer* pixelBuffer = new PixelBuffer(0xff0000ff ,800,600);
     ImageWriter* imageWriter = new ImageWriter();
     Rasterizer* rasterizer = new Rasterizer(pixelBuffer);
+    rasterizer->usePhongShading = false;
 
     Sphere* sphere = new Sphere(1.0f, 32, 32);
     rasterizer->addMesh(sphere);
@@ -51,7 +52,7 @@ int main() {
                                                    32);
     Spotlight* spotlight = new Spotlight(Float3(0, -5, 15.0), Float3(0.05f, 0.05f, 0.05f),
                                          Float3(1.0f,1.0f,0.5f), Float3(0.0f, 0.0f, 1.0f),
-                                         32, spotlightDir, 30, 60);
+                                         32, spotlightDir, 15, 30);
 
 
 //    Adding light - directional
@@ -73,19 +74,9 @@ int main() {
     torus->vertexProcessor->addLight(spotlight);
 
 
-
-
     rasterizer->fillMeshes();
     rasterizer->fillTriangles();
 
-
-
-
-
-
-
-
-    rasterizer->fillTriangles();
 
     imageWriter->saveToFile(pixelBuffer, "test.tga");
 

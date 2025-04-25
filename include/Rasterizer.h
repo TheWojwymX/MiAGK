@@ -15,6 +15,7 @@ private:
     std::vector<Mesh*> meshes;
 
 public:
+    bool usePhongShading = false;
     Rasterizer(PixelBuffer* pixelBuffer);
     void addTriangle(Triangle* t1);
     void fillTriangles();

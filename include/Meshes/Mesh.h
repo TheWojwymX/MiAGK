@@ -25,7 +25,6 @@ public:
     VertexProcessor* vertexProcessor;
 
     virtual void create() = 0;
-    std::vector<Triangle> generateTriangles();
 };
 
 
