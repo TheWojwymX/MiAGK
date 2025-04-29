@@ -12,6 +12,11 @@ Rasterizer::Rasterizer(PixelBuffer* pixelBuffer)
         textureData = nullptr;
         return; // or handle appropriately
     }
+    if (!writer.loadTGA("tex2.tga", textureData2, texWidth, texHeight)) {
+        std::cerr << "Failed to load tex2.tga" << std::endl;
+        textureData = nullptr;
+        return; // or handle appropriately
+    }
 
 }
 
@@ -60,10 +65,20 @@ void Rasterizer::fillMeshes()
             t->uv2 = mesh->vertices[index.v2].texCoord;
             t->uv3 = mesh->vertices[index.v3].texCoord;
             t->useTexture = mesh->useTexture;
-            t->textureData = this->textureData;
             t->texWidth = this->texWidth;
             t->texHeight = this->texHeight;
-			
+            t->textureType = mesh->textureType;
+
+            if(mesh->textureType == 1)
+            {
+                t->textureData = this->textureData;
+            }
+            else if(mesh->textureType ==2)
+            {
+                t->textureData = this->textureData2;
+            }
+
+
             addTriangle(t);
         }
     }
@@ -137,7 +152,16 @@ void Rasterizer::fillTriangles()
                     int texX = (int)(uv.x * (tri->texWidth - 1));
                     int texY = (int)((1.0f - uv.y) * (tri->texHeight - 1)); // Y is flipped in TGA
 
-                    unsigned int texel = tri->textureData[texX + texY * tri->texWidth];
+                    unsigned int texel = tri->textureData[texX + texY * tri->texWidth];;
+                    if(tri->textureType == 1)
+                    {
+                        texel = tri->textureData[texX + texY * tri->texWidth];
+                    }
+                    else if(tri->textureType == 2)
+                    {
+                        texel = tri->textureData[texX + texY * tri->texWidth];
+                    }
+
                     Float3 texColor(
                             ((texel >> 16) & 0xFF) / 255.0f, // R
                             ((texel >> 8) & 0xFF) / 255.0f,  // G
@@ -173,10 +197,9 @@ void Rasterizer::fillTriangles()
                     }
                     else
                     {
-                        color = tri->c1 * k1 + tri->c2 * k2 + tri->c3 * k3;
                         if(tri->useTexture)
                         {
-                            color = color * texColor;
+                            color = texColor;
                         }
                     }
 

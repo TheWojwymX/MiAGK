@@ -28,7 +28,7 @@ int main() {
     sphere2->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 1.0f), 0, Float3(0.0f, 0.0f, 0.0f), Float3(0.0f, 5.0f, 20.0f));
 
     Cone* cone = new Cone(1.0f, 32, 32);
-    rasterizer->addMesh(cone);
+    //rasterizer->addMesh(cone);
     cone->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 2.0f), 90, Float3(1.0f, 0.0f, 0.0f), Float3(-5.0f, 0.0f, 15.0f));
 
 
@@ -81,7 +81,7 @@ int main() {
 //    torus->vertexProcessor->addLight(spotlight);
 
 
-    cylinder->usePhongShading = true;
+    cylinder->usePhongShading = false;
     cone->usePhongShading = true;
     sphere->usePhongShading = true;
     sphere2->usePhongShading = true;
@@ -93,7 +93,11 @@ int main() {
     sphere2->useTexture = true;
     torus->useTexture = true;
 
-
+    cylinder->textureType = 2;
+    cone->textureType = 1;
+    sphere->textureType = 1;
+    sphere2->textureType = 2;
+    torus->textureType = 1;
 
     rasterizer->fillMeshes();
     rasterizer->fillTriangles();

@@ -26,6 +26,7 @@ public:
     VertexProcessor* vertexProcessor;
     bool usePhongShading = false;
     bool useTexture = false;
+    int textureType = 1;
 
     virtual void create() = 0;
 };

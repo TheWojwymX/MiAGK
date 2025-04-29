@@ -23,6 +23,7 @@ public:
     bool useTexture = false;
     unsigned int* textureData = nullptr;
     int texWidth = 0, texHeight = 0;
+    int textureType = 1;
 
     Triangle(Float3 v1, Float3 v2, Float3 v3, Float3 c1, Float3 c2, Float3 c3);
 };

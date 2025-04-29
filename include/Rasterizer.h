@@ -14,6 +14,7 @@ private:
     std::vector<Triangle*> triangles;
     std::vector<Mesh*> meshes;
     unsigned int* textureData = nullptr;
+    unsigned int* textureData2 = nullptr;
     int texWidth = 128, texHeight = 128;
 
 public:
