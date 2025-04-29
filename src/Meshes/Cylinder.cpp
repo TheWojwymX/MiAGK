@@ -31,7 +31,12 @@ void Cylinder::create() {
             float g = static_cast<float>(rand()) / RAND_MAX;
             float b = static_cast<float>(rand()) / RAND_MAX;
 
-            vertices.push_back({ Float3(x, y, z), normal, Float3(r, g, b) });
+            // === Add UV for side ===
+            float u = (float)i / slices;
+            float v = (float)j / stacks;
+            Float3 texCoord = Float3(u, v, 0);
+
+            vertices.push_back({ Float3(x, y, z), normal, Float3(r, g, b), texCoord });
         }
     }
 
@@ -50,14 +55,19 @@ void Cylinder::create() {
 
     // === Bottom Cap ===
     int bottomCenterIndex = vertices.size();
-    vertices.push_back({ Float3(0, 0, 0), Float3(0, 0, -1), Float3(0, 0, 0) });
+    vertices.push_back({ Float3(0, 0, 0), Float3(0, 0, -1), Float3(0, 0, 0), Float3(0.5f, 0.5f, 0) });  // Center with UV
 
     int bottomRingStart = vertices.size();
     for (int i = 0; i < slices; ++i) {
         float angle = i * angleStep;
         float x = radius * cos(angle);
         float y = radius * sin(angle);
-        vertices.push_back({ Float3(x, y, 0), Float3(0, 0, -1), Float3(0, 0, 0) });
+
+        // === Add UV for bottom cap ===
+        float u = (x / (2 * radius)) + 0.5f;
+        float v = (y / (2 * radius)) + 0.5f;
+
+        vertices.push_back({ Float3(x, y, 0), Float3(0, 0, -1), Float3(0, 0, 0), Float3(u, v, 0) });
     }
 
     for (int i = 0; i < slices; ++i) {
@@ -68,14 +78,19 @@ void Cylinder::create() {
 
     // === Top Cap ===
     int topCenterIndex = vertices.size();
-    vertices.push_back({ Float3(0, 0, height), Float3(0, 0, 1), Float3(0, 0, 0) });
+    vertices.push_back({ Float3(0, 0, height), Float3(0, 0, 1), Float3(0, 0, 0), Float3(0.5f, 0.5f, 0) });  // Center with UV
 
     int topRingStart = vertices.size();
     for (int i = 0; i < slices; ++i) {
         float angle = i * angleStep;
         float x = radius * cos(angle);
         float y = radius * sin(angle);
-        vertices.push_back({ Float3(x, y, height), Float3(0, 0, 1), Float3(0, 0, 0) });
+
+        // === Add UV for top cap ===
+        float u = (x / (2 * radius)) + 0.5f;
+        float v = (y / (2 * radius)) + 0.5f;
+
+        vertices.push_back({ Float3(x, y, height), Float3(0, 0, 1), Float3(0, 0, 0), Float3(u, v, 0) });
     }
 
     for (int i = 0; i < slices; ++i) {
@@ -94,7 +109,6 @@ void Cylinder::create() {
         Float4 worldNormal4 = vertexProcessor->obj2world * Float4(v.normal.x, v.normal.y, v.normal.z, 0.0f);
         Float3 worldNormal = worldNormal4.toFloat3();
         worldNormal.normalize();
-
 
         Float3 color(0, 0, 0);
         for (Light* light : vertexProcessor->getLights())

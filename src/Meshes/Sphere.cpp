@@ -29,11 +29,13 @@ void Sphere::create() {
         float phi = M_PI * stack / stacks;
         float y = cos(phi);
         float r = sin(phi);
+        float v = 1.0f - (float)stack / stacks;
 
         for (int slice = 0; slice <= slices; ++slice) {
             float theta = 2.0f * M_PI * slice / slices;
             float x = r * cos(theta);
             float z = r * sin(theta);
+            float u = (float)slice / slices;
 
             Float3 pos = Float3(-x, -y, -z) * radius;
             Float3 pos_norm = pos;
@@ -43,7 +45,9 @@ void Sphere::create() {
             float g = static_cast<float>(rand()) / RAND_MAX;
             float b = static_cast<float>(rand()) / RAND_MAX;
 
-            vertices.push_back({pos, pos_norm, Float3(r, g, b)});
+            Float3 texCoord = Float3(u, v, 0);
+
+            vertices.push_back({pos, pos_norm, Float3(r, g, b), texCoord});
         }
     }
 
@@ -59,7 +63,8 @@ void Sphere::create() {
 
     if (usePhongShading) return;
 
-    for (auto &v: vertices) {
+    for (auto &v: vertices)
+    {
         Float4 worldPos4 = vertexProcessor->obj2world * Float4(v.position.x, v.position.y, v.position.z, 1.0f);
         Float3 worldPos = worldPos4.toFloat3();
 

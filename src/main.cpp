@@ -27,9 +27,9 @@ int main() {
     rasterizer->addMesh(sphere2);
     sphere2->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 1.0f), 0, Float3(0.0f, 0.0f, 0.0f), Float3(0.0f, 5.0f, 20.0f));
 
-    Cone* cone = new Cone(1.0f, 16, 16);
+    Cone* cone = new Cone(1.0f, 32, 32);
     rasterizer->addMesh(cone);
-    cone->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 2.0f), 90, Float3(1.0f, 0.0f, 0.0f), Float3(-5.0f, 0.0f, 5.0f));
+    cone->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 2.0f), 90, Float3(1.0f, 0.0f, 0.0f), Float3(-5.0f, 0.0f, 15.0f));
 
 
     Cylinder* cylinder = new Cylinder(1.0f, 1.0f, 16, 16);
@@ -46,7 +46,7 @@ int main() {
     directionalDir.normalize();
     spotlightDir.normalize();
 
-    DirectionalLight* light = new DirectionalLight(Float3(100.0, 0, 0.0), Float3(0.05f, 0.05f, 0.05f),
+    DirectionalLight* light = new DirectionalLight(Float3(1.0, 0, 0.0), Float3(0.05f, 0.05f, 0.05f),
                                                    Float3(1.0f,1.0f,0.5f), Float3(0.0f, 0.0f, 1.0f),
                                                    32, directionalDir);
     PointLight* pointLight = new PointLight(Float3(20, 0, 20.0), Float3(0.05f, 0.05f, 0.05f),
@@ -63,8 +63,8 @@ int main() {
 //    Adding light - directional
     cylinder->vertexProcessor->addLight(light);
     cone->vertexProcessor->addLight(light);
-//    sphere->vertexProcessor->addLight(light);
-//    sphere2->vertexProcessor->addLight(light);
+    sphere->vertexProcessor->addLight(light);
+    sphere2->vertexProcessor->addLight(light);
     torus->vertexProcessor->addLight(light);
 
 //    Adding light - point
@@ -76,16 +76,23 @@ int main() {
 //    Adding light - spotlight
 //    cylinder->vertexProcessor->addLight(spotlight);
 //    cone->vertexProcessor->addLight(spotlight);
-    sphere->vertexProcessor->addLight(spotlight);
-    sphere2->vertexProcessor->addLight(spotlight2);
+//    sphere->vertexProcessor->addLight(spotlight);
+//    sphere2->vertexProcessor->addLight(spotlight2);
 //    torus->vertexProcessor->addLight(spotlight);
 
 
     cylinder->usePhongShading = true;
     cone->usePhongShading = true;
-//    sphere->usePhongShading = true;
+    sphere->usePhongShading = true;
     sphere2->usePhongShading = true;
     torus->usePhongShading = true;
+
+    cylinder->useTexture = true;
+    cone->useTexture = true;
+    sphere->useTexture = true;
+    sphere2->useTexture = true;
+    torus->useTexture = true;
+
 
 
     rasterizer->fillMeshes();

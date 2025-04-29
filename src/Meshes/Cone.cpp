@@ -18,8 +18,8 @@ void Cone::create() {
 
     // Generate side vertices
     for (int j = 0; j <= stacks; ++j) {
-        float z = j * heightStep;              // Height [0,1]
-        float rr = radius * (1.0f - float(j) / stacks);  // Radius decreases linearly
+        float z = j * heightStep; // Height [0, 1]
+        float rr = radius * (1.0f - float(j) / stacks); // Radius decreases linearly
 
         for (int i = 0; i < slices; ++i) {
             float angle = i * angleStep;
@@ -29,7 +29,7 @@ void Cone::create() {
             Float3 pos(x, y, z);
             Float3 nextPos(rr * cos(angle + angleStep), rr * sin(angle + angleStep), z);
             Float3 edge1 = nextPos - pos;
-            Float3 edge2 = Float3(0.0f, 0.0f, 1.0f) - pos;  // Apex is at (0, 0, 1) for now
+            Float3 edge2 = Float3(0.0f, 0.0f, 1.0f) - pos; // Apex at (0, 0, 1)
             Float3 normal = edge1.cross(edge2);
             normal.normalize();
 
@@ -37,13 +37,18 @@ void Cone::create() {
             float g = static_cast<float>(rand()) / RAND_MAX;
             float b = static_cast<float>(rand()) / RAND_MAX;
 
-            vertices.push_back({ pos, normal, Float3(r, g, b) });
+            // === Correct UV coordinates for the side ===
+            float uCoord = (float)i / slices;  // U is based on the slice
+            float vCoord = float(j) / stacks; // V is based on the height (0 to 1)
+            Float3 texCoord(uCoord, vCoord, 0);
+
+            vertices.push_back({ pos, normal, Float3(r, g, b), texCoord });
         }
     }
 
     // Apex vertex (used by top triangles if needed)
     int apexIndex = vertices.size();
-    vertices.push_back({ Float3(0.0f, 0.0f, 1.0f), Float3(0, 0, 1), Float3(1, 0, 0) });
+    vertices.push_back({ Float3(0.0f, 0.0f, 1.0f), Float3(0, 0, 1), Float3(1, 0, 0), Float3(0.5f, 0.5f, 0) });
 
     // Side indices (two triangles per quad)
     for (int j = 0; j < stacks; ++j) {
@@ -63,7 +68,7 @@ void Cone::create() {
 
     // Base center
     int baseCenterIndex = vertices.size();
-    vertices.push_back({ Float3(0.0f, 0.0f, 0.0f), Float3(0, 0, -1), Float3(0.0, 0.0, 0.0) });
+    vertices.push_back({ Float3(0.0f, 0.0f, 0.0f), Float3(0, 0, -1), Float3(0.0, 0.0, 0.0), Float3(0.5f, 0.5f, 0) });
 
     // Base ring (last stack ring)
     int baseRingStart = 0;
@@ -74,10 +79,14 @@ void Cone::create() {
         indices.push_back(Int3(next, current, baseCenterIndex));
 
         vertices[current].vertexColor = Float3(0.0f, 0.0f, 0.0f);
+
+        // === Correct UV coordinates for the base ===
+        // U goes from 0 to 1 around the circular base, V is always 1 (base level)
+        vertices[current].texCoord = Float3((float)i / slices, 1.0f, 0);
+        vertices[next].texCoord = Float3((float)(i + 1) / slices, 1.0f, 0);
     }
 
-    for (auto& v : vertices)
-    {
+    for (auto& v : vertices) {
         Float4 worldPos4 = vertexProcessor->obj2world * Float4(v.position.x, v.position.y, v.position.z, 1.0f);
         Float3 worldPos = worldPos4.toFloat3();
 
@@ -86,8 +95,7 @@ void Cone::create() {
         worldNormal.normalize();
 
         Float3 color(0, 0, 0);
-        for (Light* light : vertexProcessor->getLights())
-        {
+        for (Light* light : vertexProcessor->getLights()) {
             color = color + light->calculate(*vertexProcessor, worldPos, worldNormal) * v.vertexColor;
         }
         color.r = std::clamp(color.r, 0.0f, 1.0f);

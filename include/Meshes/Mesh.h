@@ -13,6 +13,7 @@ struct Vertex {
     Float3 position;
     Float3 normal;
     Float3 vertexColor;
+    Float3 texCoord;
 };
 
 class VertexProcessor;
@@ -24,6 +25,7 @@ public:
     std::vector<Int3> indices;
     VertexProcessor* vertexProcessor;
     bool usePhongShading = false;
+    bool useTexture = false;
 
     virtual void create() = 0;
 };

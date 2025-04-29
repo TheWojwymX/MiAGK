@@ -1,10 +1,18 @@
 #include <algorithm>
 #include <iostream>
 #include "../include/Rasterizer.h"
+#include "../include/ImageWriter.h"
 
 Rasterizer::Rasterizer(PixelBuffer* pixelBuffer)
 {
     this->pixelBuffer = pixelBuffer;
+    ImageWriter writer;
+    if (!writer.loadTGA("tex.tga", textureData, texWidth, texHeight)) {
+        std::cerr << "Failed to load tex.tga" << std::endl;
+        textureData = nullptr;
+        return; // or handle appropriately
+    }
+
 }
 
 void Rasterizer::addMesh(Mesh* mesh)
@@ -47,6 +55,14 @@ void Rasterizer::fillMeshes()
             t->w1 = world1;
             t->w2 = world2;
             t->w3 = world3;
+
+            t->uv1 = mesh->vertices[index.v1].texCoord;
+            t->uv2 = mesh->vertices[index.v2].texCoord;
+            t->uv3 = mesh->vertices[index.v3].texCoord;
+            t->useTexture = mesh->useTexture;
+            t->textureData = this->textureData;
+            t->texWidth = this->texWidth;
+            t->texHeight = this->texHeight;
 			
             addTriangle(t);
         }
@@ -113,14 +129,25 @@ void Rasterizer::fillTriangles()
                     float depth = k1 * v1z + k2 * v2z + k3 * v3z;
                     if(depth < zBuffer[x + y * width]) continue;
 
+                    // Texture sampling
+                    Float3 uv = tri->uv1 * k1 + tri->uv2 * k2 + tri->uv3 * k3;
+                    uv.x = std::clamp(uv.x, 0.0f, 1.0f);
+                    uv.y = std::clamp(uv.y, 0.0f, 1.0f);
+
+                    int texX = (int)(uv.x * (tri->texWidth - 1));
+                    int texY = (int)((1.0f - uv.y) * (tri->texHeight - 1)); // Y is flipped in TGA
+
+                    unsigned int texel = tri->textureData[texX + texY * tri->texWidth];
+                    Float3 texColor(
+                            ((texel >> 16) & 0xFF) / 255.0f, // R
+                            ((texel >> 8) & 0xFF) / 255.0f,  // G
+                            (texel & 0xFF) / 255.0f          // B
+                    );
+//Float3 texColor(1,0,0);
 
                     Float3 color(0,0,0);
 
-                    if(tri->usePhongShading == false)
-                    {
-                        color = triangles[i]->c1 * k1 + triangles[i]->c2 * k2 + triangles[i]->c3 * k3;
-                    }
-                    else
+                    if(tri->usePhongShading)
                     {
                         Float3 interpolatedNormal = triangles[i]->n1 * k1 + triangles[i]->n2 * k2 + triangles[i]->n3 * k3;
                         interpolatedNormal.normalize();
@@ -132,10 +159,28 @@ void Rasterizer::fillTriangles()
                         color = Float3(0, 0, 0);
                         for (Light* light : lights)
                         {
-                            color = color + light->calculate(*triangles[i]->vp, interpolatedWorldPos, interpolatedNormal)
-                                            * (triangles[i]->c1 * k1 + triangles[i]->c2 * k2 + triangles[i]->c3 * k3);
+                            color = color + light->calculate(*triangles[i]->vp, interpolatedWorldPos, interpolatedNormal);
+
+                            if(tri->useTexture)
+                            {
+                                color = texColor * color;
+                            }
+                            else
+                            {
+                                color = color * (tri->c1 * k1 + tri->c2 * k2 + tri->c3 * k3);
+                            }
                         }
                     }
+                    else
+                    {
+                        color = tri->c1 * k1 + tri->c2 * k2 + tri->c3 * k3;
+                        if(tri->useTexture)
+                        {
+                            color = color * texColor;
+                        }
+                    }
+
+
                     color.r = std::clamp(color.r, 0.0f, 1.0f);
                     color.g = std::clamp(color.g, 0.0f, 1.0f);
                     color.b = std::clamp(color.b, 0.0f, 1.0f);

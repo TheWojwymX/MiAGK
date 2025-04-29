@@ -39,16 +39,21 @@ void Torus::create() {
             float g = static_cast<float>(rand()) / RAND_MAX;
             float b = static_cast<float>(rand()) / RAND_MAX;
 
-            vertices.push_back({ pos, normal, Float3(r, g, b) });
+            // === Add UV coordinates ===
+            float uCoord = (float)i / slices;
+            float vCoord = (float)j / stacks;
+            Float3 texCoord = Float3(uCoord, vCoord, 0);
+
+            vertices.push_back({ pos, normal, Float3(r, g, b), texCoord });
         }
     }
 
     for (int i = 0; i < slices; ++i) {
         for (int j = 0; j < stacks; ++j) {
             int current = i * (stacks + 1) + j;
-            int next = (i + 1) % slices * (stacks + 1) + j;  // Wrap around at the end of slices
-            int currentNext = i * (stacks + 1) + (j + 1) % stacks;  // Wrap around at the end of stacks
-            int nextNext = (i + 1) % slices * (stacks + 1) + (j + 1) % stacks;
+            int next = (i + 1) % slices * (stacks + 1) + j;
+            int currentNext = i * (stacks + 1) + (j + 1);
+            int nextNext = (i + 1) % slices * (stacks + 1) + (j + 1);
 
             // Bottom face triangle
             indices.push_back(Int3(current, next, currentNext));

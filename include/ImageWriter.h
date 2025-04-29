@@ -10,6 +10,7 @@ private:
 public:
     ImageWriter();
     void saveToFile(PixelBuffer* buffer, char* path);
+    bool loadTGA(const char* filename, unsigned int*& data, int& width, int& height);
 
 };
 

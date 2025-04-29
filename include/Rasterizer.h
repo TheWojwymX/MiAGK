@@ -13,6 +13,8 @@ private:
     PixelBuffer* pixelBuffer;
     std::vector<Triangle*> triangles;
     std::vector<Mesh*> meshes;
+    unsigned int* textureData = nullptr;
+    int texWidth = 128, texHeight = 128;
 
 public:
     Rasterizer(PixelBuffer* pixelBuffer);
