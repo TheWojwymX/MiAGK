@@ -23,6 +23,9 @@ int main() {
     rasterizer->addMesh(sphere);
     sphere->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 1.0f), 0, Float3(0.0f, 0.0f, 0.0f), Float3(0.0f, -5.0f, 20.0f));
 
+    Sphere* sphere2 = new Sphere(1.0f, 32, 32);
+    rasterizer->addMesh(sphere2);
+    sphere2->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 1.0f), 0, Float3(0.0f, 0.0f, 0.0f), Float3(0.0f, 5.0f, 20.0f));
 
     Cone* cone = new Cone(1.0f, 16, 16);
     rasterizer->addMesh(cone);
@@ -37,7 +40,7 @@ int main() {
     rasterizer->addMesh(torus);
     torus->vertexProcessor->setTransform(Float3(1.0f, 1.0f, 1.0f), 90, Float3(1.0f, 0.0f, 0.0f), Float3(0.0f, 0.0f, 10.0f));
 
-    Float3 directionalDir(0.0f, 0.0f, 0.0f);
+    Float3 directionalDir(1.0f, 0.0f, 0.0f);
     Float3 spotlightDir(0.0f, 0.0f, 1.0f);
 
     directionalDir.normalize();
@@ -49,7 +52,10 @@ int main() {
     PointLight* pointLight = new PointLight(Float3(20, 0, 20.0), Float3(0.05f, 0.05f, 0.05f),
                                                    Float3(1.0f,1.0f,0.5f), Float3(0.0f, 0.0f, 1.0f),
                                                    32);
-    Spotlight* spotlight = new Spotlight(Float3(0, -5, 15), Float3(0.05f, 0.05f, 0.05f),
+    Spotlight* spotlight = new Spotlight(Float3(0, -4.5, 15), Float3(0.05f, 0.05f, 0.05f),
+                                         Float3(1.0f,1.0f,0.5f), Float3(0.0f, 0.0f, 1.0f),
+                                         32, spotlightDir, 15, 30);
+    Spotlight* spotlight2 = new Spotlight(Float3(0, 4.5, 15), Float3(0.05f, 0.05f, 0.05f),
                                          Float3(1.0f,1.0f,0.5f), Float3(0.0f, 0.0f, 1.0f),
                                          32, spotlightDir, 15, 30);
 
@@ -57,7 +63,8 @@ int main() {
 //    Adding light - directional
     cylinder->vertexProcessor->addLight(light);
     cone->vertexProcessor->addLight(light);
-    sphere->vertexProcessor->addLight(light);
+//    sphere->vertexProcessor->addLight(light);
+//    sphere2->vertexProcessor->addLight(light);
     torus->vertexProcessor->addLight(light);
 
 //    Adding light - point
@@ -68,15 +75,17 @@ int main() {
 
 //    Adding light - spotlight
 //    cylinder->vertexProcessor->addLight(spotlight);
-    cone->vertexProcessor->addLight(spotlight);
+//    cone->vertexProcessor->addLight(spotlight);
     sphere->vertexProcessor->addLight(spotlight);
+    sphere2->vertexProcessor->addLight(spotlight2);
 //    torus->vertexProcessor->addLight(spotlight);
 
 
-//    cylinder->usePhongShading = true;
-//    cone->usePhongShading = true;
+    cylinder->usePhongShading = true;
+    cone->usePhongShading = true;
 //    sphere->usePhongShading = true;
-//    torus->usePhongShading = true;
+    sphere2->usePhongShading = true;
+    torus->usePhongShading = true;
 
 
     rasterizer->fillMeshes();
